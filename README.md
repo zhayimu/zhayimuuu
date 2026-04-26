@@ -1,55 +1,33 @@
-# Zhayimuuu Photography Portfolio
+# zhayimuuu Photography Portfolio
 
-A cinematic, modern photography portfolio for Zaim, a freelance photographer and videographer based in Kuala Lumpur.
-
-## Setup and Deployment
-
-- **[Upload Your Own Photos](./UPLOAD_INSTRUCTIONS.md)**: Instructions on how to add your personal photography to this portfolio.
-- **[Deployment to Vercel](./UPLOAD_INSTRUCTIONS.md#deploying-to-vercel)**: Quick guide to taking your site live.
+A cinematic, modern photography portfolio for Zaim, a freelance photographer and visual curator based in Kuala Lumpur.
 
 ## Features
 
-- **Cinematic Visuals**: High-impact hero section and minimalist design.
-- **Horizontal Scrolling Portfolios**: Automatic parallax-style scrolling rows that move as you scroll down the page.
-- **Manual Navigation**: Left/Right buttons for manual exploration of each event category.
+- **Cinematic Visuals**: High-impact hero section with parallax depth and glassmorphism.
+- **Infinite Marquee Rows**: Automatically moving horizontal scrolls that react to your vertical scroll.
+- **Hosted Assets**: All images are served from cloud storage for optimized loading speeds.
 - **Responsive Design**: Fully optimized for mobile, tablet, and desktop viewing.
 - **Service Categories**:
-  - **Weddings**: Malaysia-based wedding coverage.
-  - **Official Events**: Professional documentation for galas and forums.
-  - **Convocation**: Personalized graduation shoots.
+  - **Weddings**: Malaysia-based traditional and modern wedding coverage.
+  - **Official Events**: Professional documentation for galas, inaugurations, and diplomatic events.
+  - **Convocation**: Personalized outdoor and on-location sessions for graduates.
 - **Contact Integration**: Direct WhatsApp linkage and social media connectivity.
 
 ## Tech Stack
 
-- **React**: Frontend framework.
-- **TypeScript**: Type safety and better developer experience.
-- **Tailwind CSS**: Utility-first styling.
-- **Motion (Framer Motion)**: For butter-smooth animations and scroll effects.
-- **Lucide React**: For beautiful, minimalist iconography.
+- **React**: Modern functional components.
+- **TypeScript**: Robust type-safe architecture.
+- **Tailwind CSS**: Custom "Cinematic" theme with glassmorphic accents.
+- **Motion (Framer Motion)**: Scroll-driven parallax and infinite loop animations.
+- **Lucide React**: Minimalist iconography.
 
 ## Project Structure
 
-- `src/App.tsx`: Main application logic and UI components.
-- `src/data.ts`: Centralized data for photos and categories.
-- `src/index.css`: Global styles and custom Tailwind extensions.
-- `src/types.ts`: TypeScript interfaces for the project.
-
-## How to Customize
-
-### Adding Photos
-Edit `src/data.ts` and add objects to the `PHOTOS` array:
-```typescript
-{
-  id: "unique-id",
-  title: "Photo Title",
-  category: "Weddings", // Must match Category type
-  url: "https://your-image-url.com",
-  description: "Short description"
-}
-```
-
-### Changing Profile Info
-Edit the "About Me" section in `src/App.tsx` (found around the `#about` id).
+- `src/App.tsx`: Main application entry and UI logic.
+- `src/data.ts`: Centralized database for hosted image links.
+- `src/index.css`: Tailwind configuration and custom animation keyframes.
+- `src/types.ts`: TypeScript interfaces for the data layer.
 
 ## Credits
-Designed and Developed for Zaim's Legacy.
+Designed and Developed for zhayimuuu's Legacy.
