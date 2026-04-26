@@ -15,7 +15,8 @@ import {
   X,
   ExternalLink,
   ChevronRight,
-  ChevronLeft
+  ChevronLeft,
+  ChevronDown
 } from 'lucide-react';
 import { Photo, Category } from './types';
 import { PHOTOS } from './data';
@@ -139,17 +140,17 @@ export default function App() {
       </AnimatePresence>
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-6 md:px-12 py-8 md:py-10 flex justify-between items-center">
+      <nav className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-6 md:px-12 py-4 md:py-10 flex justify-between items-center">
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex items-center gap-4 text-white font-bold tracking-[4px] text-sm uppercase"
+          className="flex items-center gap-4 text-white font-bold tracking-[2px] md:tracking-[4px] text-[10px] md:text-sm uppercase"
         >
           {/* Logo text updated per user request */}
           zhayimuuu.
         </motion.div>
         
-        <div className="flex gap-4 md:gap-8 text-[10px] items-center tracking-[3px] uppercase font-bold text-white/60">
+        <div className="flex gap-3 md:gap-8 text-[8px] md:text-[10px] items-center tracking-[2px] md:tracking-[3px] uppercase font-bold text-white/60">
           <a href="#gallery" className="hover:text-white transition-colors">Gallery</a>
           <a href="#about" className="hover:text-white transition-colors">About</a>
           <a href="#contact" className="hover:text-white transition-colors">Contact</a>
@@ -190,13 +191,18 @@ export default function App() {
             transition={{ delay: 1.5 }}
             className="mt-20 flex flex-col items-center gap-4"
           >
-            <div className="w-[1px] h-20 bg-gradient-to-b from-white to-transparent" />
+            <a 
+              href="#services" 
+              className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-500 group"
+            >
+              <ChevronDown className="w-6 h-6 group-hover:scale-110 transition-transform" />
+            </a>
           </motion.div>
         </div>
       </section>
 
       {/* Categories Grid (Interactive) */}
-      <section className="section-container bg-zinc-950/20">
+      <section id="services" className="section-container bg-zinc-950/20">
         <div className="text-center mb-24">
           <div className="tag">Our Pillars</div>
           <h2 className="text-4xl md:text-5xl font-serif italic mb-4">Service Disciplines</h2>
