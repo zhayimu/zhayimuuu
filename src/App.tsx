@@ -20,18 +20,16 @@ import {
 import { Photo, Category } from './types';
 import { PHOTOS } from './data';
 
-function HorizontalScrollRow({ photos, onPhotoClick }: { photos: Photo[], onPhotoClick: (photo: Photo) => void }) {
+function HorizontalScrollRow({ photos, onPhotoClick, direction = 1 }: { photos: Photo[], onPhotoClick: (photo: Photo) => void, direction?: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Vertical scroll influences the horizontal offset (parallax)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (containerRef.current) {
-      const scrollAmount = 600;
-      containerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
+  const parallaxX = useTransform(scrollYProgress, [0, 1], [direction * 100, direction * -100]);
 
   if (photos.length === 0) {
     return (
@@ -41,53 +39,48 @@ function HorizontalScrollRow({ photos, onPhotoClick }: { photos: Photo[], onPhot
     );
   }
 
-  return (
-    <div className="relative group/row px-8">
-      {/* Navigation Buttons */}
-      <div className="absolute inset-y-0 left-12 z-20 flex items-center pointer-events-none">
-        <button 
-          onClick={(e) => { e.preventDefault(); scroll('left'); }}
-          className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all opacity-0 group-hover/row:opacity-100 pointer-events-auto shadow-2xl"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-      </div>
-      <div className="absolute inset-y-0 right-12 z-20 flex items-center pointer-events-none">
-        <button 
-          onClick={(e) => { e.preventDefault(); scroll('right'); }}
-          className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all opacity-0 group-hover/row:opacity-100 pointer-events-auto shadow-2xl"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-      </div>
+  // Double the photos for a seamless infinite marquee
+  const marqueePhotos = [...photos, ...photos, ...photos];
 
-      <div 
-        ref={containerRef}
-        className="flex gap-4 md:gap-8 py-8 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
-      >
-        {photos.map((photo) => (
-          <motion.div 
-            key={photo.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            onClick={() => onPhotoClick(photo)}
-            className="flex-shrink-0 w-[85vw] md:w-[450px] aspect-[4/5] md:aspect-[2/3] relative rounded-2xl md:rounded-3xl overflow-hidden group shadow-2xl bg-zinc-900 snap-center cursor-pointer"
-          >
-            <img 
-              src={photo.url} 
-              alt={photo.category}
-              className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-              loading="lazy"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 scale-0 group-hover:scale-100 transition-transform duration-500 shadow-xl">
-                <ExternalLink className="w-5 h-5 text-white" />
+  return (
+    <div ref={containerRef} className="relative group/row overflow-hidden">
+      <div className="flex py-4 md:py-8 overflow-hidden pointer-events-none md:pointer-events-auto">
+        <motion.div 
+          style={{ x: parallaxX }}
+          animate={{ 
+            x: direction > 0 ? ["0%", "-33.33%"] : ["-33.33%", "0%"]
+          }}
+          transition={{ 
+            duration: 30 + photos.length * 3, 
+            repeat: Infinity, 
+            ease: "linear" 
+          }}
+          className="flex gap-4 md:gap-8 flex-nowrap"
+        >
+          {marqueePhotos.map((photo, idx) => (
+            <motion.div 
+              key={`${photo.id}-${idx}`}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              onClick={() => onPhotoClick(photo)}
+              className="flex-shrink-0 w-[75vw] md:w-[450px] aspect-[4/5] md:aspect-[2/3] relative rounded-2xl md:rounded-3xl overflow-hidden group shadow-2xl bg-zinc-900 cursor-pointer pointer-events-auto"
+            >
+              <img 
+                src={photo.url} 
+                alt={photo.category}
+                className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl flex items-center justify-center border border-white/20 scale-0 group-hover:scale-100 transition-all duration-500 shadow-2xl">
+                  <ExternalLink className="w-6 h-6 text-white" />
+                </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </div>
   );
@@ -238,7 +231,11 @@ export default function App() {
                   <h3 className="text-2xl md:text-4xl font-serif italic opacity-40">{cat}</h3>
                   <div className="h-[1px] flex-grow mx-8 bg-white/5" />
                 </div>
-                <HorizontalScrollRow photos={categoryPhotos} onPhotoClick={setSelectedPhoto} />
+                <HorizontalScrollRow 
+                  photos={categoryPhotos} 
+                  onPhotoClick={setSelectedPhoto} 
+                  direction={i % 2 === 0 ? 1 : -1} 
+                />
               </div>
             );
           })}
