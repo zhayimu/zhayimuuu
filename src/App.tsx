@@ -42,44 +42,51 @@ function HorizontalScrollRow({ photos, onPhotoClick, direction = 1 }: { photos: 
   // Double the photos for a seamless infinite marquee
   const marqueePhotos = [...photos, ...photos, ...photos];
 
+  // Combine multiple independent motion wrappers to avoid transform fighting
   return (
     <div ref={containerRef} className="relative group/row overflow-hidden">
       <div className="flex py-4 md:py-8 overflow-hidden pointer-events-none md:pointer-events-auto">
+        {/* Parallax Wrapper: Handles vertical-to-horizontal influence */}
         <motion.div 
           style={{ x: parallaxX }}
-          animate={{ 
-            x: direction > 0 ? ["0%", "-33.33%"] : ["-33.33%", "0%"]
-          }}
-          transition={{ 
-            duration: 30 + photos.length * 3, 
-            repeat: Infinity, 
-            ease: "linear" 
-          }}
-          className="flex gap-4 md:gap-8 flex-nowrap"
+          className="flex flex-nowrap"
         >
-          {marqueePhotos.map((photo, idx) => (
-            <motion.div 
-              key={`${photo.id}-${idx}`}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              onClick={() => onPhotoClick(photo)}
-              className="flex-shrink-0 w-[75vw] md:w-[450px] aspect-[4/5] md:aspect-[2/3] relative rounded-2xl md:rounded-3xl overflow-hidden group shadow-2xl bg-zinc-900 cursor-pointer pointer-events-auto"
-            >
-              <img 
-                src={photo.url} 
-                alt={photo.category}
-                className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl flex items-center justify-center border border-white/20 scale-0 group-hover:scale-100 transition-all duration-500 shadow-2xl">
-                  <ExternalLink className="w-6 h-6 text-white" />
+          {/* Marquee Wrapper: Handles constant infinite movement */}
+          <motion.div 
+            animate={{ 
+              x: direction > 0 ? ["0%", "-33.33%"] : ["-33.33%", "0%"]
+            }}
+            transition={{ 
+              duration: 25 + photos.length * 2, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }}
+            className="flex gap-4 md:gap-8 flex-nowrap"
+          >
+            {marqueePhotos.map((photo, idx) => (
+              <motion.div 
+                key={`${photo.id}-${idx}`}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                onClick={() => onPhotoClick(photo)}
+                className="flex-shrink-0 w-[75vw] md:w-[450px] aspect-[4/5] md:aspect-[2/3] relative rounded-2xl md:rounded-3xl overflow-hidden group shadow-2xl bg-zinc-900 cursor-pointer pointer-events-auto"
+              >
+                <img 
+                  src={photo.url} 
+                  alt={photo.category}
+                  className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl flex items-center justify-center border border-white/20 scale-0 group-hover:scale-100 transition-all duration-500 shadow-2xl">
+                    <ExternalLink className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     </div>
