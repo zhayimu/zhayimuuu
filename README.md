@@ -2,6 +2,11 @@
 
 A cinematic, modern photography portfolio for Zaim, a freelance photographer and videographer based in Kuala Lumpur.
 
+## Setup and Deployment
+
+- **[Upload Your Own Photos](./UPLOAD_INSTRUCTIONS.md)**: Instructions on how to add your personal photography to this portfolio.
+- **[Deployment to Vercel](./UPLOAD_INSTRUCTIONS.md#deploying-to-vercel)**: Quick guide to taking your site live.
+
 ## Features
 
 - **Cinematic Visuals**: High-impact hero section and minimalist design.
@@ -47,4 +52,4 @@ Edit `src/data.ts` and add objects to the `PHOTOS` array:
 Edit the "About Me" section in `src/App.tsx` (found around the `#about` id).
 
 ## Credits
-Designed and Developed for zhayimu.
+Designed and Developed for Zaim's Legacy.

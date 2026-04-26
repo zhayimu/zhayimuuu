@@ -20,19 +20,12 @@ import {
 import { Photo, Category } from './types';
 import { PHOTOS } from './data';
 
-function HorizontalScrollRow({ photos, reverse = false }: { photos: Photo[], reverse?: boolean }) {
+function HorizontalScrollRow({ photos }: { photos: Photo[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll();
-  
-  const x = useTransform(
-    scrollYProgress, 
-    [0, 1], 
-    reverse ? ["0%", "-30%"] : ["-30%", "0%"]
-  );
 
   const scroll = (direction: 'left' | 'right') => {
     if (containerRef.current) {
-      const scrollAmount = 400;
+      const scrollAmount = 600;
       containerRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
@@ -40,21 +33,29 @@ function HorizontalScrollRow({ photos, reverse = false }: { photos: Photo[], rev
     }
   };
 
+  if (photos.length === 0) {
+    return (
+      <div className="h-[400px] flex items-center justify-center border border-white/5 bg-white/5 rounded-3xl mx-8">
+        <p className="text-white/20 uppercase tracking-widest text-xs">No photos found in this category</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative group/row">
+    <div className="relative group/row px-8">
       {/* Navigation Buttons */}
-      <div className="absolute inset-y-0 left-4 z-20 flex items-center opacity-0 group-hover/row:opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-y-0 left-12 z-20 flex items-center pointer-events-none">
         <button 
-          onClick={() => scroll('left')}
-          className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all"
+          onClick={(e) => { e.preventDefault(); scroll('left'); }}
+          className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all opacity-0 group-hover/row:opacity-100 pointer-events-auto shadow-2xl"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
       </div>
-      <div className="absolute inset-y-0 right-4 z-20 flex items-center opacity-0 group-hover/row:opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-y-0 right-12 z-20 flex items-center pointer-events-none">
         <button 
-          onClick={() => scroll('right')}
-          className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all"
+          onClick={(e) => { e.preventDefault(); scroll('right'); }}
+          className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all opacity-0 group-hover/row:opacity-100 pointer-events-auto shadow-2xl"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
@@ -62,31 +63,26 @@ function HorizontalScrollRow({ photos, reverse = false }: { photos: Photo[], rev
 
       <div 
         ref={containerRef}
-        className="flex gap-8 py-4 px-4 overflow-x-auto no-scrollbar mask-fade-edges"
+        className="flex gap-4 md:gap-8 py-8 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
       >
-        <motion.div 
-          style={{ x }}
-          className="flex gap-4 md:gap-8 active:cursor-grabbing"
-        >
-          {photos.map((photo) => (
-            <div 
-              key={photo.id}
-              className="flex-shrink-0 w-[280px] md:w-[400px] aspect-[2/3] relative rounded-2xl md:rounded-3xl overflow-hidden group shadow-2xl bg-zinc-900"
-            >
-              <img 
-                src={photo.url} 
-                alt={photo.title}
-                className="w-full h-full object-cover transition-transform duration-[1s] group-hover:scale-110"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6 md:p-8">
-                <p className="text-white text-lg font-serif italic mb-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{photo.title}</p>
-                <p className="text-white/60 text-[10px] tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">{photo.category}</p>
-              </div>
-            </div>
-          ))}
-        </motion.div>
+        {photos.map((photo) => (
+          <motion.div 
+            key={photo.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex-shrink-0 w-[85vw] md:w-[450px] aspect-[4/5] md:aspect-[2/3] relative rounded-2xl md:rounded-3xl overflow-hidden group shadow-2xl bg-zinc-900 snap-center"
+          >
+            <img 
+              src={photo.url} 
+              alt={photo.category}
+              className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          </motion.div>
+        ))}
       </div>
     </div>
   );
@@ -104,7 +100,7 @@ export default function App() {
           animate={{ opacity: 1 }}
           className="flex items-center gap-4"
         >
-          <img src="https://static.ais-web.apps.googleusercontent.com/ai-studio/6451a547-5d07-4e00-9286-348f95c4749f.png" alt="Zhayimuuu Logo" className="w-12 h-12 invert" />
+          <img src="/images/logo.png" alt="Zhayimuuu Logo" className="w-12 h-12 invert" />
         </motion.div>
         
         <div className="flex gap-8 text-[10px] items-center tracking-[3px] uppercase font-bold text-white/60">
@@ -123,7 +119,7 @@ export default function App() {
           className="absolute inset-0 z-0"
         >
           <img 
-            src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=2069" 
+            src="/images/home_hero.jpg" 
             alt="Hero Background"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
@@ -149,7 +145,6 @@ export default function App() {
             className="mt-20 flex flex-col items-center gap-4"
           >
             <div className="w-[1px] h-20 bg-gradient-to-b from-white to-transparent" />
-            <span className="text-[10px] tracking-[5px] uppercase font-bold text-white/40">Scroll to Explore</span>
           </motion.div>
         </div>
       </section>
@@ -197,9 +192,8 @@ export default function App() {
                 <div className="px-8 flex items-center justify-between">
                   <h3 className="text-2xl md:text-4xl font-serif italic opacity-40">{cat}</h3>
                   <div className="h-[1px] flex-grow mx-8 bg-white/5" />
-                  <span className="text-[10px] tracking-[4px] uppercase font-bold text-white/20">Scroll to view</span>
                 </div>
-                <HorizontalScrollRow photos={categoryPhotos} reverse={i % 2 === 0} />
+                <HorizontalScrollRow photos={categoryPhotos} />
               </div>
             );
           })}
@@ -237,7 +231,7 @@ export default function App() {
             className="relative aspect-[3/4] rounded-[3rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] order-2 lg:order-1"
           >
             <img 
-              src="https://static.ais-web.apps.googleusercontent.com/ai-studio/87178873-61fc-408a-b9c7-50361cd35499.png" 
+              src="/images/about_me.jpg" 
               alt="Zaim - Photographer"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
