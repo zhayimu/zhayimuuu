@@ -153,14 +153,14 @@ export default function App() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <motion.div 
           initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.4 }}
+          animate={{ scale: 1, opacity: 0.6 }}
           transition={{ duration: 2, ease: "easeOut" }}
           className="absolute inset-0 z-0"
         >
           <img 
             src="https://i.ibb.co/Y4kPfjZR/Untitled-design-10.png" 
             alt="Hero Background"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover blur-[8px] scale-110"
             referrerPolicy="no-referrer"
           />
         </motion.div>
@@ -171,7 +171,7 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            <h1 className="text-7xl md:text-[12vw] cinematic-text">
+            <h1 className="text-7xl md:text-[12vw] cinematic-text drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
               Capturing <br />
               The <span className="text-white/20">Legacy.</span>
             </h1>
