@@ -47,4 +47,4 @@ Edit `src/data.ts` and add objects to the `PHOTOS` array:
 Edit the "About Me" section in `src/App.tsx` (found around the `#about` id).
 
 ## Credits
-Designed and Developed for Zaim's Legacy.
+Designed and Developed for zhayimu.
