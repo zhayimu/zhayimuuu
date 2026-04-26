@@ -136,9 +136,10 @@ export default function App() {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex items-center gap-4"
+          className="flex items-center gap-4 text-white font-bold tracking-[4px] text-sm uppercase"
         >
-          <img src="/images/logo.png" alt="Zhayimuuu Logo" className="w-12 h-12 invert" />
+          {/* Logo text updated per user request */}
+          zhayimuuu.
         </motion.div>
         
         <div className="flex gap-8 text-[10px] items-center tracking-[3px] uppercase font-bold text-white/60">
@@ -157,7 +158,7 @@ export default function App() {
           className="absolute inset-0 z-0"
         >
           <img 
-            src="/images/home_hero.jpg" 
+            src="https://i.ibb.co/Y4kPfjZR/Untitled-design-10.png" 
             alt="Hero Background"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
@@ -199,12 +200,12 @@ export default function App() {
             <motion.div
               key={cat}
               whileHover={{ backgroundColor: "rgba(255,255,255,0.03)" }}
-              className="p-12 h-[500px] flex flex-col justify-between group cursor-pointer relative bg-zinc-950 border-white/5 border-b md:border-b-0 md:border-r last:border-b-0 last:border-r-0"
+              className="p-10 md:p-14 flex flex-col group cursor-pointer relative bg-zinc-950 border-white/5 border-b md:border-b-0 md:border-r last:border-b-0 last:border-r-0"
             >
-              <div className="text-stroke text-7xl font-serif italic absolute top-8 right-8 group-hover:text-white/20 transition-all opacity-50">0{i+1}</div>
+              <div className="text-stroke text-6xl md:text-7xl font-serif italic absolute top-8 right-8 group-hover:text-white/20 transition-all opacity-30">0{i+1}</div>
               <div className="relative z-10">
                 <h4 className="text-3xl font-serif italic mb-6">{cat}</h4>
-                <p className="text-bento-text-dim text-sm leading-relaxed max-w-[280px]">
+                <p className="text-bento-text-dim text-sm md:text-base leading-relaxed max-w-[320px]">
                   {cat === "Weddings" && "Capturing the heart of your traditional or modern ceremony with a genuine emotion. I provide full documentation of your special day, delivering high-quality digital visuals that preserve your memories without the need for an overwhelming production crew."}
                   {cat === "Official Events" && "Dignified and professional documentation for galas, inaugurations, and diplomatic events. I provide excellent service to capture key moments and VIPs with precision and a fast turnaround."}
                   {cat === "Convocation" && "Personalized outdoor and on-location sessions for the graduating class. I specialize in capturing your \"last stroll\" around campus and celebratory moments with friends and family. Professionally edited shots that celebrate your milestone in the real world."}
@@ -273,7 +274,7 @@ export default function App() {
             className="relative aspect-[3/4] rounded-[3rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] order-2 lg:order-1"
           >
             <img 
-              src="/images/about_me.jpg" 
+              src="https://i.ibb.co/R436ZH2B/IMG-7734-2.jpg" 
               alt="Zaim - Photographer"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
