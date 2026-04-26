@@ -139,7 +139,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-8 py-10 flex justify-between items-center">
+      <nav className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-6 md:px-12 py-8 md:py-10 flex justify-between items-center">
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -149,7 +149,7 @@ export default function App() {
           zhayimuuu.
         </motion.div>
         
-        <div className="flex gap-8 text-[10px] items-center tracking-[3px] uppercase font-bold text-white/60">
+        <div className="flex gap-4 md:gap-8 text-[10px] items-center tracking-[3px] uppercase font-bold text-white/60">
           <a href="#gallery" className="hover:text-white transition-colors">Gallery</a>
           <a href="#about" className="hover:text-white transition-colors">About</a>
           <a href="#contact" className="hover:text-white transition-colors">Contact</a>
@@ -199,7 +199,7 @@ export default function App() {
       <section className="section-container bg-zinc-950/20">
         <div className="text-center mb-24">
           <div className="tag">Our Pillars</div>
-          <h2 className="text-4xl font-serif italic mb-4">Service Disciplines</h2>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-4">Service Disciplines</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 bg-white/5 rounded-[2rem] overflow-hidden">
@@ -296,7 +296,7 @@ export default function App() {
             transition={{ duration: 1 }}
             className="order-1 lg:order-2"
           >
-            <div className="tag mb-8">Personal</div>
+            <div className="tag mb-8">Personally.</div>
             <h2 className="text-5xl md:text-7xl cinematic-text mb-12">
               About <br />
               <span className="text-white/20">Me.</span>
