@@ -20,7 +20,7 @@ import {
 import { Photo, Category } from './types';
 import { PHOTOS } from './data';
 
-function HorizontalScrollRow({ photos }: { photos: Photo[] }) {
+function HorizontalScrollRow({ photos, onPhotoClick }: { photos: Photo[], onPhotoClick: (photo: Photo) => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -71,7 +71,8 @@ function HorizontalScrollRow({ photos }: { photos: Photo[] }) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex-shrink-0 w-[85vw] md:w-[450px] aspect-[4/5] md:aspect-[2/3] relative rounded-2xl md:rounded-3xl overflow-hidden group shadow-2xl bg-zinc-900 snap-center"
+            onClick={() => onPhotoClick(photo)}
+            className="flex-shrink-0 w-[85vw] md:w-[450px] aspect-[4/5] md:aspect-[2/3] relative rounded-2xl md:rounded-3xl overflow-hidden group shadow-2xl bg-zinc-900 snap-center cursor-pointer"
           >
             <img 
               src={photo.url} 
@@ -80,7 +81,11 @@ function HorizontalScrollRow({ photos }: { photos: Photo[] }) {
               loading="lazy"
               referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 scale-0 group-hover:scale-100 transition-transform duration-500 shadow-xl">
+                <ExternalLink className="w-5 h-5 text-white" />
+              </div>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -90,9 +95,49 @@ function HorizontalScrollRow({ photos }: { photos: Photo[] }) {
 
 export default function App() {
   const categories: Category[] = ["All", "Weddings", "Official Events", "Convocation"];
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
   return (
     <div className="bg-bento-bg text-white font-sans overflow-x-hidden">
+      {/* Lightbox / Full Photo View */}
+      <AnimatePresence>
+        {selectedPhoto && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPhoto(null)}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-full max-h-full flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={selectedPhoto.url}
+                alt={selectedPhoto.category}
+                className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/10"
+              />
+              
+              <button
+                onClick={() => setSelectedPhoto(null)}
+                className="absolute top-[-4rem] right-0 md:top-4 md:right-4 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="absolute bottom-[-4rem] left-0 right-0 flex flex-col items-center">
+                <span className="tag mb-2">View Full Image</span>
+                <p className="text-white font-serif italic text-xl">{selectedPhoto.category}</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-8 py-10 flex justify-between items-center">
         <motion.div 
@@ -104,7 +149,7 @@ export default function App() {
         </motion.div>
         
         <div className="flex gap-8 text-[10px] items-center tracking-[3px] uppercase font-bold text-white/60">
-          <a href="#work" className="hover:text-white transition-colors">Work</a>
+          <a href="#gallery" className="hover:text-white transition-colors">Gallery</a>
           <a href="#about" className="hover:text-white transition-colors">About</a>
           <a href="#contact" className="hover:text-white transition-colors">Contact</a>
         </div>
@@ -178,10 +223,10 @@ export default function App() {
       </section>
 
       {/* Selected Portfolios */}
-      <section id="work" className="py-32 overflow-hidden bg-black/40">
+      <section id="gallery" className="py-32 overflow-hidden bg-black/40">
         <div className="px-8 mb-20">
           <div className="tag">Selected Portfolios</div>
-          <h2 className="text-5xl md:text-8xl font-serif italic cinematic-text">The Work.</h2>
+          <h2 className="text-5xl md:text-8xl font-serif italic cinematic-text">The Gallery.</h2>
         </div>
 
         <div className="space-y-24">
@@ -193,7 +238,7 @@ export default function App() {
                   <h3 className="text-2xl md:text-4xl font-serif italic opacity-40">{cat}</h3>
                   <div className="h-[1px] flex-grow mx-8 bg-white/5" />
                 </div>
-                <HorizontalScrollRow photos={categoryPhotos} />
+                <HorizontalScrollRow photos={categoryPhotos} onPhotoClick={setSelectedPhoto} />
               </div>
             );
           })}

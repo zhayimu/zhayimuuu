@@ -7,18 +7,15 @@ import { Photo } from './types';
  */
 
 export const PHOTOS: Photo[] = [
-  {
-    id: "user-hero",
-    category: "Weddings",
-    url: "/images/home_hero.jpg"
-  },
-  {
-    id: "user-about",
-    category: "Official Events",
-    url: "/images/about_me.jpg"
-  },
-  // WEDDINGS (Placeholder for future uploads)
-  // { id: "w1", category: "Weddings", url: "/images/wedding/w1.jpg" },
+  // WEDDINGS (Updated with your uploads!)
+  { id: "w3", category: "Weddings", url: "/images/wedding/w3.jpg" },
+  { id: "w4", category: "Weddings", url: "/images/wedding/w4.jpg" },
+  { id: "w5", category: "Weddings", url: "/images/wedding/w5.jpg" },
+  { id: "w6", category: "Weddings", url: "/images/wedding/w6.jpg" },
+  { id: "w7", category: "Weddings", url: "/images/wedding/w7.jpg" },
+  { id: "w8", category: "Weddings", url: "/images/wedding/w8.jpg" },
+  { id: "w9", category: "Weddings", url: "/images/wedding/w9.jpg" },
+  { id: "w10", category: "Weddings", url: "/images/wedding/w10.jpg" },
 
   // OFFICIAL EVENTS (Files e1-e10 in public/images/events/)
   { id: "o1", category: "Official Events", url: "/images/events/e1.jpg" },
