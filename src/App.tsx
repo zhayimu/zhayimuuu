@@ -18,6 +18,7 @@ import {
   ChevronLeft,
   ChevronDown
 } from 'lucide-react';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Photo, Category } from './types';
 import { PHOTOS } from './data';
 
@@ -371,6 +372,7 @@ export default function App() {
           </motion.div>
         </div>
       </footer>
+      <SpeedInsights />
     </div>
   );
 }
