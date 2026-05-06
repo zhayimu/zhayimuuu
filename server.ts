@@ -28,7 +28,7 @@ async function startServer() {
       "frame-ancestors 'self' https://aistudio.google.com;"
     );
     res.setHeader("X-Content-Type-Options", "nosniff");
-    res.setHeader("X-Frame-Options", "SAMEORIGIN");
+    res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
     res.setHeader("X-XSS-Protection", "1; mode=block");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
