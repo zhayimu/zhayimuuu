@@ -1,23 +1,9 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script>
-      // Fix for "Cannot set property fetch of #<Window> which has only a getter"
-      (function() {
-        var originalFetch = window.fetch;
-        try {
-          Object.defineProperty(window, 'fetch', {
-            configurable: true,
-            enumerable: true,
-            get: function() { return originalFetch; },
-            set: function(v) { originalFetch = v; }
-          });
-        } catch (e) {}
-      })();
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://*.ibb.co https://i.ibb.co; connect-src 'self' ws: wss: https://vitals.vercel-insights.com;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://*.ibb.co https://i.ibb.co; connect-src 'self' ws: wss: https://vitals.vercel-insights.com; object-src 'none'; base-uri 'self';" />
     <title>zhayimuuu</title>
   </head>
   <body>

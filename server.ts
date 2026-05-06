@@ -17,11 +17,13 @@ async function startServer() {
     res.setHeader(
       "Content-Security-Policy",
       "default-src 'self'; " +
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+      "script-src 'self' 'unsafe-eval'; " +
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-      "font-src 'self' data: https://fonts.gstatic.com; " +
+      "font-src 'self' https://fonts.gstatic.com; " +
       "img-src 'self' data: blob: https://images.unsplash.com https://i.ibb.co https://*.ibb.co; " +
       "connect-src 'self' ws: wss: https://vitals.vercel-insights.com; " +
+      "object-src 'none'; " +
+      "base-uri 'self'; " +
       "frame-ancestors 'self' https://aistudio.google.com;"
     );
     res.setHeader("X-Content-Type-Options", "nosniff");
