@@ -1,4 +1,5 @@
 import express from "express";
+import helmet from "helmet";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -12,27 +13,58 @@ async function startServer() {
 
   app.disable("x-powered-by");
 
-  // Add Security headers
+  // Add Security headers using Helmet
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        useDefaults: false,
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: [
+            "'self'",
+            // Vite requires unsafe-inline and unsafe-eval in development
+            ...(process.env.NODE_ENV !== "production" ? ["'unsafe-inline'", "'unsafe-eval'"] : []),
+          ],
+          styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+          fontSrc: ["'self'", "https://fonts.gstatic.com"],
+          imgSrc: [
+            "'self'",
+            "data:",
+            "blob:",
+            "https://images.unsplash.com",
+            "https://i.ibb.co",
+            "https://*.ibb.co"
+          ],
+          connectSrc: ["'self'", "ws:", "wss:", "https://vitals.vercel-insights.com"],
+          objectSrc: ["'none'"],
+          baseUri: ["'self'"],
+          formAction: ["'self'"],
+          // Allow framing in AI Studio for preview purposes
+          frameAncestors: ["'self'", "https://aistudio.google.com", "https://*.google.com"],
+        },
+      },
+      frameguard: {
+        action: "sameorigin",
+      },
+      hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true,
+      },
+      xssFilter: true, // Adds X-XSS-Protection
+      noSniff: true, // Adds X-Content-Type-Options
+      referrerPolicy: {
+        policy: "strict-origin-when-cross-origin",
+      },
+      crossOriginResourcePolicy: {
+        policy: "same-origin", // or cross-origin depending on needs, but using helmet defaults or specific
+      },
+    })
+  );
+
+  // Set Permissions-Policy manually as helmet doesn't have a dedicated API for all features
   app.use((req, res, next) => {
-    res.setHeader(
-      "Content-Security-Policy",
-      "default-src 'self'; " +
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-      "font-src 'self' https://fonts.gstatic.com; " +
-      "img-src 'self' data: blob: https://images.unsplash.com https://i.ibb.co https://*.ibb.co; " +
-      "connect-src 'self' ws: wss: https://vitals.vercel-insights.com; " +
-      "object-src 'none'; " +
-      "base-uri 'self'; " +
-      "form-action 'self'; " +
-      "frame-ancestors 'self' https://aistudio.google.com https://*.google.com;"
-    );
-    res.setHeader("X-Content-Type-Options", "nosniff");
-    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
-    res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
-    res.setHeader("X-XSS-Protection", "1; mode=block");
-    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-    res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()");
+    res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(), interest-cohort=()");
     next();
   });
 
