@@ -17,7 +17,7 @@ async function startServer() {
     res.setHeader(
       "Content-Security-Policy",
       "default-src 'self'; " +
-      "script-src 'self'; " +
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
       "font-src 'self' https://fonts.gstatic.com; " +
       "img-src 'self' data: blob: https://images.unsplash.com https://i.ibb.co https://*.ibb.co; " +
@@ -25,10 +25,10 @@ async function startServer() {
       "object-src 'none'; " +
       "base-uri 'self'; " +
       "form-action 'self'; " +
-      "frame-ancestors 'self' https://aistudio.google.com;"
+      "frame-ancestors 'self' https://aistudio.google.com https://*.google.com;"
     );
     res.setHeader("X-Content-Type-Options", "nosniff");
-    res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
     res.setHeader("X-XSS-Protection", "1; mode=block");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
