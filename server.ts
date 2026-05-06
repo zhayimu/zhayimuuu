@@ -10,6 +10,23 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  // Add Security headers
+  app.use((req, res, next) => {
+    res.setHeader(
+      "Content-Security-Policy",
+      "default-src 'self'; " +
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+      "font-src 'self' data: https://fonts.gstatic.com; " +
+      "img-src 'self' data: blob: https://images.unsplash.com https://i.ibb.co https://*.ibb.co; " +
+      "connect-src 'self' ws: wss: https://vitals.vercel-insights.com; " +
+      "frame-ancestors 'self' https://aistudio.google.com;"
+    );
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "SAMEORIGIN");
+    next();
+  });
+
   // Mock Photo Data API
   const photos = [
     {
